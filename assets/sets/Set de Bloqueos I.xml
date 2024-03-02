@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<movement-set>
+    <movement-set-name>Set de Bloqueos 1</movement-set-name>
+    <movement-set-description>El set de bloqueos 1 es el primer set de movimientos que se aprende en el Kenpo Kárate Americano. Aquí, vas a aprender los primeros cuatro bloqueos.</movement-set-description>
+    <movements>
+        <movement>
+            <movement-name>Bloqueo Hacia Arriba</movement-name>
+            <movement-description>El bloqueo hacia arriba te permite deferenderte contra ataques que vienen desde arriba.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>1</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Bloqueo Hacia Adentro</movement-name>
+            <movement-description>El bloqueo hacia adentro te permite defenderte contra ataques directos hacia tu cara.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>2</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Bloque Hacia Afuera Extendido</movement-name>
+            <movement-description>El bloqueo hacia fuera extendido te permite defenderte de ataques circulares hacia tu cara.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>3</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Bloqueo Hacia Abajo Hacia Fuera</movement-name>
+            <movement-description>El bloqueo hacia abajo hacia fuera te permite defenderte contra ataques bajos hacia tu abdomen o entrepierna.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>4</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Amartillamiento</movement-name>
+            <movement-description>Este movimiento sirve para devolver tu mano a la cadera.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>5</movement-order>
+        </movement>
+    </movements>
+</movement-set>

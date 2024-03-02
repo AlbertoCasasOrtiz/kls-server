@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Next Movement</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while loading the Set: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            {% csrf_token %}
+
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Movement Name:</strong></label>
+                <div class="col-sm-10 p-0">
+                    {{ movement_name }}
+                </div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Movement Description:</strong></label>
+                <div class="col-sm-10 p-0">
+                    {{ movement_description }}
+                </div>
+            </div>
+            <a class="btn btn-primary font-weight-bold text-white" href="/prepare_capture_movement/" id="continue-button">Continue</a>
+
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function delayedButtonClick() {
+        {% if is_last %}
+            // Get the button element
+            var reportsButton = document.getElementById("reports-button");
+            // Simulate a click on the button
+            reportsButton.click();
+        {% else %}
+            // Get the button element
+            var continueButton = document.getElementById("continue-button");
+            // Simulate a click on the button
+            continueButton.click();
+        {% endif %}
+    }
+    console.log("CAPTURE")
+
+    setTimeout(delayedButtonClick, 2000);
+</script>
+{% endblock %}

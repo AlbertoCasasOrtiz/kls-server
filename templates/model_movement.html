@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Movements Modeled</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while modeling the movements: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+              The movements were modeled successfully.
+            </div>
+            <a class="btn btn-primary font-weight-bold text-white" href="/analyze_movement/" id="continue-button">Continue</a>
+
+        {% endif %}
+    </div>
+</div>
+<script>
+    function delayedButtonClick() {
+        // Get the button element
+        var continueButton = document.getElementById("continue-button");
+        // Simulate a click on the button
+        continueButton.click();
+    }
+    console.log("CAPTURE")
+
+    setTimeout(delayedButtonClick, 2000);
+</script>
+{% endblock %}

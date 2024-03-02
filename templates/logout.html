@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+  <div class="jumbotron">
+    <h1 class="mb-4">Successfully Logged Out</h1>
+    <p class="mb-2">You have been successfully logged out of your account.</p>
+    <div style="text-align: center">
+        <a href="{% url 'home' %}" class="btn btn-primary">Return to Home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

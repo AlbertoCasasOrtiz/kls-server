@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<movement-set>
+    <movement-set-name>Blocking Set I</movement-set-name>
+    <movement-set-description>Blocking Set I is the first set learned in American Kenpo Karate. This set consists of six blocking movements executed with the purpose of blocking a different set of attacks.</movement-set-description>
+    <movements>
+        <movement>
+            <movement-name>Upper Block</movement-name>
+            <movement-description>Upper block allows the user to defend against attack coming from above, for example, an attack with a club or a metal bar.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>1</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Inner Block</movement-name>
+            <movement-description>Inner block allows the user to defend against a direct attack to the face, or a circular attack.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>2</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Outer Extended Block</movement-name>
+            <movement-description>Outer extended block allow you to defend against a circular attack.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>3</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Downward Outward Block</movement-name>
+            <movement-description>Downward block allow you to block a frontal or circular low attack, for example, a kick.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>4</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Rear Elbow Block</movement-name>
+            <movement-description>While returning your arm to the hip, you are executing a lateral block, protecting you from an attack coming from your side.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>5</movement-order>
+        </movement>
+    </movements>
+</movement-set>

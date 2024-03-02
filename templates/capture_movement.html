@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Start capture movement</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while modeling the movements: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+              The movements were captured successfully.
+            </div>
+            <a class="btn btn-primary font-weight-bold text-white" href="/model_movement/">Continue</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

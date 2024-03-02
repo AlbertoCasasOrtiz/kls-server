@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Restart Set</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while restarting the set: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+              The set was restarted successfully.
+            </div>
+            <a class="btn btn-primary font-weight-bold text-white" href="/info_set/">Continue</a>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
