@@ -16,7 +16,7 @@
             <movement-order>2</movement-order>
         </movement>
         <movement>
-            <movement-name>Bloque Hacia Afuera Extendido</movement-name>
+            <movement-name>Bloqueo Hacia Afuera Extendido</movement-name>
             <movement-description>El bloqueo hacia fuera extendido te permite defenderte de ataques circulares hacia tu cara.</movement-description>
             <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
             <movement-order>3</movement-order>
