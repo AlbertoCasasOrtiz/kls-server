@@ -487,6 +487,19 @@ class GetSetInfoApp(views.APIView):
                 movement_num = len(movement_name)
                 current_movement = kls.current_movement
 
+                # Create a session uuid name.
+                # Generate uuid_name to identify this session.
+                current_datetime = datetime.now()
+                ordered_string = current_datetime.strftime("%Y-%m-%d-%H-%M-%S")
+                session_folder_name = "session - " + str(ordered_string) + "/"
+
+                # Initialize phase implementations.
+                output_path = "assets/output/" + request.user.username + "/" + session_folder_name + "/"
+                request.session['output_path'] = output_path
+
+                # Create results folder
+                os.makedirs("assets/output/" + request.user.username + "/" + session_folder_name + "/")
+
         except:
             # printing stack trace
             error_message = traceback.format_exc()
@@ -1082,13 +1095,14 @@ class GetReport(views.APIView):
             # Get session uuid_name.
             output_path = request.session.get('output_path', None)
 
-            generated_reports = kls.reports.generate_reports(output_path, "",
+            generated_reports, score = kls.reports.generate_reports(output_path, "",
                                                              kls.compiled_errors)
 
         except:
             # printing stack trace
             error_message = traceback.format_exc()
             generated_report_string = ""
+            score = 0
             status = 'error'
             generated_reports = ""
             print(error_message)
@@ -1096,6 +1110,7 @@ class GetReport(views.APIView):
         context = {
             'status': status,
             'generated_report': generated_reports,
+            'score': int(score),
             'error_message': error_message
         }
 
@@ -1117,19 +1132,26 @@ class GetReportApp(views.APIView):
             output_path = request.session.get('output_path', "assets/output/capture/")
             kls = get_kls_from_session(request, output_path)
 
-            # Get current set of movements in mcmarr
-            kls_set = kls.get_set_of_movements()
+            # # Get current set of movements in mcmarr
+            # kls_set = kls.get_set_of_movements()
+            #
+            # # Get metrics.
+            # if kls_set.get_name() != '':
+            #     num_movements = len(kls_set.get_movement_names())
+            # num_errors = kls.num_iter - num_movements
+            #
+            # generated_report = f"Num. Movements: {num_movements} \n"
+            # generated_report = generated_report + f"Num. Errors: {num_errors} \n"
 
-            # Get metrics.
-            if kls_set.get_name() != '':
-                num_movements = len(kls_set.get_movement_names())
-            num_errors = kls.num_iter - num_movements
+            # Get session uuid_name.
+            output_path = request.session.get('output_path', None)
 
-            generated_report = f"Num. Movements: {num_movements} \n"
-            generated_report = generated_report + f"Num. Errors: {num_errors} \n"
+            generated_report, score = kls.reports.generate_reports(output_path, "",
+                                                             kls.compiled_errors)
         except:
             # printing stack trace
             error_message = traceback.format_exc()
+            score = 0
             status = 'error'
             generated_report = ''
             print(error_message)
@@ -1137,6 +1159,7 @@ class GetReportApp(views.APIView):
         context = {
             'status': status,
             'generated_report': generated_report,
+            'score': score,
             'error_message': error_message
         }
 
