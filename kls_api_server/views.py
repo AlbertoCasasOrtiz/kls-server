@@ -1096,7 +1096,7 @@ class GetReport(views.APIView):
             output_path = request.session.get('output_path', None)
 
             generated_reports, score = kls.reports.generate_reports(output_path, "",
-                                                             kls.compiled_errors)
+                                                             kls.compiled_errors, kls.wrong_questions)
 
         except:
             # printing stack trace
@@ -1147,7 +1147,8 @@ class GetReportApp(views.APIView):
             output_path = request.session.get('output_path', None)
 
             generated_report, score = kls.reports.generate_reports(output_path, "",
-                                                             kls.compiled_errors)
+                                                             kls.compiled_errors, kls.wrong_questions)
+
         except:
             # printing stack trace
             error_message = traceback.format_exc()
@@ -1164,3 +1165,198 @@ class GetReportApp(views.APIView):
         }
 
         return JsonResponse(context, status=http.HTTPStatus.OK)
+
+
+class GetNextQuestion(views.APIView):
+    def get(self, request):
+        status = 'success'
+        error_message = ''
+        question_str = ''
+        answers = []
+        question = None
+        correct_answer = ""
+
+        kls = None
+
+        try:
+            #  Get kls instance.
+            output_path = request.session.get('output_path', "assets/output/capture/")
+            kls = get_kls_from_session(request, output_path)
+
+            # Get session uuid_name.
+            output_path = request.session.get('output_path', None)
+
+            # Get question.
+            if kls and kls.current_question < len(kls.cognitive.get_set().get_questions()):
+                question = kls.cognitive.get_set().get_question(kls.current_question)
+
+                question_str = question.get_question()
+                answers = question.get_answers()
+                correct_answer = question.get_correct_answer()
+
+                # Store the instance to the cache again.
+                request.session['kls'] = kls.to_dict()
+        except:
+            # printing stack trace
+            error_message = traceback.format_exc()
+            question_str = ""
+            answers = []
+            correct_answer = ""
+            status = 'error'
+
+        context = {
+            'status': status,
+            'question_str': question_str,
+            'correct_answer': correct_answer,
+            'answers': answers,
+            'error_message': error_message
+        }
+
+        if kls and question:
+            return render(request, 'cognitive.html', context=context)
+        else:
+            get_report = GetReport()
+            response = get_report.get(request)
+            return response
+
+class GetNextQuestionApp(views.APIView):
+    def get(self, request):
+        status = 'success'
+        error_message = ''
+        question_str = ''
+        answers = []
+        question = None
+        correct_answer = ""
+
+        kls = None
+
+        try:
+            #  Get kls instance.
+            output_path = request.session.get('output_path', "assets/output/capture/")
+            kls = get_kls_from_session(request, output_path)
+
+            # Get question.
+            if kls and kls.current_question < len(kls.cognitive.get_set().get_questions()):
+                question = kls.cognitive.get_set().get_question(kls.current_question)
+
+                question_str = question.get_question()
+                answers = question.get_answers()
+                correct_answer = question.get_correct_answer()
+
+                # Store the instance to the cache again.
+                request.session['kls'] = kls.to_dict()
+        except:
+            # printing stack trace
+            error_message = traceback.format_exc()
+            question_str = ""
+            answers = []
+            correct_answer = ""
+            status = 'error'
+
+        context = {
+            'status': status,
+            'question_str': question_str,
+            'correct_answer': correct_answer,
+            'answers': answers,
+            'error_message': error_message
+        }
+
+        return JsonResponse(context, status=http.HTTPStatus.OK)
+
+
+class RegisterWrongQuestion(views.APIView):
+    def post(self, request):
+        status = 'success'
+        error_message = ''
+        question_str = ''
+        answers = []
+        question = None
+        correct_answer = ""
+        wrong_answer = request.data.get("wrong_answer", "")  # Capture the wrong answer from the POST request data
+
+        try:
+            #  Get kls instance.
+            output_path = request.session.get('output_path', "assets/output/capture/")
+            kls = get_kls_from_session(request, output_path)
+
+            # Get question.
+            if kls and kls.current_question < len(kls.cognitive.get_set().get_questions()):
+                question = kls.cognitive.get_set().get_question(kls.current_question)
+
+                question_str = question.get_question()
+                answers = question.get_answers()
+                correct_answer = question.get_correct_answer()
+
+                # Store the instance to the cache again.
+                request.session['kls'] = kls.to_dict()
+                if not question.get_question() in kls.wrong_questions:
+                    kls.wrong_questions.append({"question": question.get_question(), "answer": wrong_answer})
+
+            print(kls.wrong_questions)
+
+            # Store the instance to the cache again.
+            request.session['kls'] = kls.to_dict()
+        except:
+            # printing stack trace
+            error_message = traceback.format_exc()
+            status = 'error'
+
+        context = {
+            'status': status,
+            'question_str': question_str,
+            'correct_answer': correct_answer,
+            'answers': answers,
+            'error_message': error_message
+        }
+
+        return render(request, 'cognitive.html', context=context)
+
+class RegisterCorrectQuestion(views.APIView):
+    def get(self, request):
+        status = 'success'
+        error_message = ''
+        question_str = ''
+        answers = []
+        question = None
+        correct_answer = ""
+
+        kls = None
+
+        try:
+            #  Get kls instance.
+            output_path = request.session.get('output_path', "assets/output/capture/")
+            kls = get_kls_from_session(request, output_path)
+
+            # Get question.
+            if kls and kls.current_question < len(kls.cognitive.get_set().get_questions()):
+                question = kls.cognitive.get_set().get_question(kls.current_question)
+
+                question_str = question.get_question()
+                answers = question.get_answers()
+                correct_answer = question.get_correct_answer()
+
+                kls.current_question = kls.current_question + 1
+
+            # Store the instance to the cache again.
+            request.session['kls'] = kls.to_dict()
+        except:
+            # printing stack trace
+            error_message = traceback.format_exc()
+            status = 'error'
+
+        context = {
+            'status': status,
+            'question_str': question_str,
+            'correct_answer': correct_answer,
+            'answers': answers,
+            'error_message': error_message
+        }
+
+        if kls and question:
+            get_next_question_view = GetNextQuestion()
+            response = get_next_question_view.get(request)
+            return response
+        else:
+            get_report = GetReport()
+            response = get_report.get(request)
+            return response

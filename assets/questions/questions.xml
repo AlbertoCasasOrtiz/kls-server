@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<questions>
+    <question>
+        <question>¿Cual es el primer movimiento del Set de Bloqueos I?</question>
+        <answers>
+            <answer>Bloqueo Hacia Arriba</answer>
+            <answer>Bloqueo Hacia Dentro</answer>
+            <answer>Bloqueo Hacia Afuera</answer>
+            <answer>Bloqueo Hacia Abajo</answer>
+        </answers>
+        <correct-answer-pos>0</correct-answer-pos>
+    </question>
+    <question>
+        <question>¿Qué se enfatiza en la ejecución de todos los bloqueos en el set de bloqueos 1?</question>
+        <answers>
+            <answer>Fuerza</answer>
+            <answer>Tecnica</answer>
+            <answer>Velocidad</answer>
+            <answer>Agresividad</answer>
+        </answers>
+        <correct-answer-pos>1</correct-answer-pos>
+    </question>
+</questions>

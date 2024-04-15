@@ -49,5 +49,9 @@ urlpatterns = [
     path('get_report/', views.GetReport.as_view(), name='get_report'),
     path('get_report_app/', views.GetReportApp.as_view(), name='get_report_app'),
     path('admin/', admin.site.urls),
+    path('get_next_question/', views.GetNextQuestion.as_view()),
+    path('get_next_question_app/', views.GetNextQuestionApp.as_view()),
+    path('register_wrong_question/', views.RegisterWrongQuestion.as_view()),
+    path('register_correct_question/', views.RegisterCorrectQuestion.as_view()),
     path('webcam_stream/', views.webcam_stream, name='webcam_stream'),
 ]
