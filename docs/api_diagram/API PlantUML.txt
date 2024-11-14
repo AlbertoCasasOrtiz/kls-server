@@ -1,0 +1,238 @@
+                                                        KLS Server API                                                  
+                                                                                                                        
+         ┌─┐                                                                                                            
+         ║"│                                                                                                            
+         └┬┘                                                                                                            
+         ┌┼┐                                                                                                            
+          │                              ┌──────────┐                                                                   
+         ┌┴┐                             │KLS Server│                                                                   
+      Frontend                           └─────┬────┘                                                                   
+          │                                    │ ╔═════════════════════════╗                                            
+          │               GET /                │ ║Renders the homepage    ░║                                            
+          │───────────────────────────────────>│ ║Responses:               ║                                            
+          │                                    │ ║200: Rendered HTML page  ║                                            
+          │                                    │ ╚═════════════════════════╝                                            
+          │                                    │ ╔════════════════════════════════════════════╗                         
+          │      GET /analyze_movement/        │ ║Analyzes modeled movement against expected ░║                         
+          │───────────────────────────────────>│ ║Responses:                                  ║                         
+          │                                    │ ║200: Analysis result in template            ║                         
+          │                                    │ ║500: Error in analysis process              ║                         
+          │                                    │ ╚════════════════════════════════════════════╝                         
+          │                                    │ ╔═════════════════════════════════════════╗                            
+          │    GET /analyze_movement_app/      │ ║Analyzes modeled movement, returns JSON ░║                            
+          │───────────────────────────────────>│ ║Responses:                               ║                            
+          │                                    │ ║200: Analysis result in JSON             ║                            
+          │                                    │ ║500: Error in analysis process           ║                            
+          │                                    │ ╚═════════════════════════════════════════╝                            
+          │                                    │ ╔════════════════════════════════════════╗                             
+          │      GET /capture_movement/        │ ║Captures movement, stores in session   ░║                             
+          │───────────────────────────────────>│ ║Responses:                              ║                             
+          │                                    │ ║200: Captured and stored, renders page  ║                             
+          │                                    │ ╚════════════════════════════════════════╝                             
+          │                                    │ ╔══════════════════════════════════════╗                               
+          │    GET /capture_movement_app/      │ ║Captures movement, stores in session ░║                               
+          │───────────────────────────────────>│ ║Responses:                            ║                               
+          │                                    │ ║200: Captured and stored              ║                               
+          │                                    │ ╚══════════════════════════════════════╝                               
+          │                                    │ ╔══════════════════════════════════╗                                   
+          │       GET /get_csrf_token/         │ ║Retrieve CSRF token              ░║                                   
+          │───────────────────────────────────>│ ║Responses:                        ║                                   
+          │                                    │ ║200: CSRF token retrieved         ║                                   
+          │                                    │ ║500: Error retrieving CSRF token  ║                                   
+          │                                    │ ╚══════════════════════════════════╝                                   
+          │                                    │ ╔═════════════════════════╗                                            
+          │        GET /get_list_sets/         │ ║List all available sets ░║                                            
+          │───────────────────────────────────>│ ║Responses:               ║                                            
+          │                                    │ ║200: List of set names   ║                                            
+          │                                    │ ╚═════════════════════════╝                                            
+          │                                    │ ╔═══════════════════════════════════╗                                  
+          │      GET /get_next_question/       │ ║Retrieves next cognitive question ░║                                  
+          │───────────────────────────────────>│ ║Responses:                         ║                                  
+          │                                    │ ║200: Returns question, answers     ║                                  
+          │                                    │ ║500: Error retrieving question     ║                                  
+          │                                    │ ╚═══════════════════════════════════╝                                  
+          │                                    │ ╔═══════════════════════════════════════════╗                          
+          │    GET /get_next_question_app/     │ ║Retrieves next cognitive question in JSON ░║                          
+          │───────────────────────────────────>│ ║Responses:                                 ║                          
+          │                                    │ ║200: Returns question, answers             ║                          
+          │                                    │ ║500: Error retrieving question             ║                          
+          │                                    │ ╚═══════════════════════════════════════════╝                          
+          │                                    │ ╔══════════════════════════════════╗                                   
+          │         GET /get_report/           │ ║Generates report based on errors ░║                                   
+          │───────────────────────────────────>│ ║Responses:                        ║                                   
+          │                                    │ ║200: Report generated             ║                                   
+          │                                    │ ║500: Error generating report      ║                                   
+          │                                    │ ╚══════════════════════════════════╝                                   
+          │                                    │ ╔═════════════════════════════════╗                                    
+          │       GET /get_report_app/         │ ║Generates report in JSON format ░║                                    
+          │───────────────────────────────────>│ ║Responses:                       ║                                    
+          │                                    │ ║200: Report generated            ║                                    
+          │                                    │ ║500: Error generating report     ║                                    
+          │                                    │ ╚═════════════════════════════════╝                                    
+          │                                    │ ╔═══════════════════════════════════════════════╗                      
+          │        GET /get_response/          │ ║Generates response based on movement analysis ░║                      
+          │───────────────────────────────────>│ ║Responses:                                     ║                      
+          │                                    │ ║200: Response delivered, KLS updated           ║                      
+          │                                    │ ║500: Error generating response                 ║                      
+          │                                    │ ╚═══════════════════════════════════════════════╝                      
+          │                                    │ ╔═══════════════════════════════════╗                                  
+          │      GET /get_response_app/        │ ║Generates response in JSON format ░║                                  
+          │───────────────────────────────────>│ ║Responses:                         ║                                  
+          │                                    │ ║200: Response generated            ║                                  
+          │                                    │ ║500: Error generating response     ║                                  
+          │                                    │ ╚═══════════════════════════════════╝                                  
+          │                                    │ ╔═══════════════════════════════════╗                                  
+          │          GET /info_set/            │ ║Fetch current KLS set details     ░║                                  
+          │───────────────────────────────────>│ ║Responses:                         ║                                  
+          │                                    │ ║200: Set details retrieved         ║                                  
+          │                                    │ ║500: Error retrieving set details  ║                                  
+          │                                    │ ╚═══════════════════════════════════╝                                  
+          │                                    │ ╔═══════════════════════════════════════╗                              
+          │        GET /info_set_app/          │ ║Fetch current KLS set details in JSON ░║                              
+          │───────────────────────────────────>│ ║Responses:                             ║                              
+          │                                    │ ║200: Set details retrieved             ║                              
+          │                                    │ ║500: Error retrieving set details      ║                              
+          │                                    │ ╚═══════════════════════════════════════╝                              
+          │                                    │ ╔═════════════════════════════════════════╗                            
+          │            GET /login/             │ ║Renders the login page                  ░║                            
+          │───────────────────────────────────>│ ║Responses:                               ║                            
+          │                                    │ ║200: Rendered HTML page with login form  ║                            
+          │                                    │ ╚═════════════════════════════════════════╝                            
+          │                                    │ ╔═════════════════════════════════════════╗                            
+          │                                    │ ║Authenticates a Frontend                ░║                            
+          │           POST /login/             │ ║Responses:                               ║                            
+          │───────────────────────────────────>│ ║200: Session ID or redirect to homepage  ║                            
+          │                                    │ ║400: Missing Frontendname or password    ║                            
+          │                                    │ ║403: Incorrect credentials               ║                            
+          │                                    │ ╚═════════════════════════════════════════╝                            
+          │                                    │ ╔═══════════════════════════════════════════╗                          
+          │           GET /logout/             │ ║Renders logout confirmation               ░║                          
+          │───────────────────────────────────>│ ║Responses:                                 ║                          
+          │                                    │ ║200: Rendered HTML page confirming logout  ║                          
+          │                                    │ ╚═══════════════════════════════════════════╝                          
+          │                                    │ ╔══════════════════════════════════════════╗                           
+          │         GET /logout_app/           │ ║Logs out current Frontend                ░║                           
+          │───────────────────────────────────>│ ║Responses:                                ║                           
+          │                                    │ ║200: JSON response for successful logout  ║                           
+          │                                    │ ╚══════════════════════════════════════════╝                           
+          │                                    │ ╔═════════════════════════════════════════╗                            
+          │       GET /model_movement/         │ ║Models captured movement, stores result ░║                            
+          │───────────────────────────────────>│ ║Responses:                               ║                            
+          │                                    │ ║200: Modeled and rendered page           ║                            
+          │                                    │ ║500: Error modeling movement             ║                            
+          │                                    │ ╚═════════════════════════════════════════╝                            
+          │                                    │ ╔═════════════════════════════════════════════╗                        
+          │     GET /model_movement_app/       │ ║Models captured movement, stores in session ░║                        
+          │───────────────────────────────────>│ ║Responses:                                   ║                        
+          │                                    │ ║200: Modeled and stored                      ║                        
+          │                                    │ ║500: Error modeling movement                 ║                        
+          │                                    │ ╚═════════════════════════════════════════════╝                        
+          │                                    │ ╔════════════════════════════════════╗                                 
+          │        GET /next_movement/         │ ║Retrieves next or current movement ░║                                 
+          │───────────────────────────────────>│ ║Responses:                          ║                                 
+          │                                    │ ║200: Movement retrieved             ║                                 
+          │                                    │ ║500: Error retrieving movement      ║                                 
+          │                                    │ ╚════════════════════════════════════╝                                 
+          │                                    │ ╔═════════════════════════════════╗                                    
+          │      GET /next_movement_app/       │ ║Retrieves next movement in JSON ░║                                    
+          │───────────────────────────────────>│ ║Responses:                       ║                                    
+          │                                    │ ║200: Movement retrieved          ║                                    
+          │                                    │ ║500: Error retrieving movement   ║                                    
+          │                                    │ ╚═════════════════════════════════╝                                    
+          │                                    │ ╔═══════════════════════════════════════════╗                          
+          │  GET /prepare_capture_movement/    │ ║Prepares interface for capturing movement ░║                          
+          │───────────────────────────────────>│ ║Responses:                                 ║                          
+          │                                    │ ║200: Rendered capture preparation page     ║                          
+          │                                    │ ╚═══════════════════════════════════════════╝                          
+          │                                    │ ╔═════════════════════════════╗                                        
+          │       GET /privacy_policy/         │ ║Renders privacy policy page ░║                                        
+          │───────────────────────────────────>│ ║Responses:                   ║                                        
+          │                                    │ ║200: Rendered HTML page      ║                                        
+          │                                    │ ╚═════════════════════════════╝                                        
+          │                                    │ ╔═════════════════════════════════════════════╗                        
+          │  GET /register_correct_question/   │ ║Registers correct answer, advances question ░║                        
+          │───────────────────────────────────>│ ║Responses:                                   ║                        
+          │                                    │ ║200: Next question advanced                  ║                        
+          │                                    │ ║500: Error registering answer                ║                        
+          │                                    │ ╚═════════════════════════════════════════════╝                        
+          │                                    │ ╔══════════════════════════════════╗                                   
+          │GET /register_correct_question_app/ │ ║Registers correct answer in JSON ░║                                   
+          │───────────────────────────────────>│ ║Responses:                        ║                                   
+          │                                    │ ║200: Next question advanced       ║                                   
+          │                                    │ ║500: Error registering answer     ║                                   
+          │                                    │ ╚══════════════════════════════════╝                                   
+          │                                    │ ╔═════════════════════════════════════════════════════════════╗        
+          │  POST /register_wrong_question/    │ ║Registers a wrong answer for the current cognitive question ░║        
+          │───────────────────────────────────>│ ║Responses:                                                   ║        
+          │                                    │ ║201: Successfully registers the wrong answer                 ║        
+          │                                    │ ║500: Error during registration process                       ║        
+          │                                    │ ╚═════════════════════════════════════════════════════════════╝        
+          │                                    │ ╔═════════════════════════════════════════════════════════════════════╗
+          │POST /register_wrong_question_app/  │ ║Registers a wrong answer in JSON for the current cognitive question ░║
+          │───────────────────────────────────>│ ║Responses:                                                           ║
+          │                                    │ ║201: Successfully registers the wrong answer                         ║
+          │                                    │ ║500: Error during registration process                               ║
+          │                                    │ ╚═════════════════════════════════════════════════════════════════════╝
+          │                                    │ ╔════════════════════════════════════════════════════════╗             
+          │                                    │ ║Restart the current set, reinitialize the KLS instance ░║             
+          │         GET /restart_set/          │ ║Responses:                                              ║             
+          │───────────────────────────────────>│ ║200: Successfully restarted                             ║             
+          │                                    │ ║403: User not authenticated                             ║             
+          │                                    │ ║500: Error during restart                               ║             
+          │                                    │ ╚════════════════════════════════════════════════════════╝             
+          │                                    │ ╔══════════════════════════════════════════╗                           
+          │           GET /signup/             │ ║Renders the signup page                  ░║                           
+          │───────────────────────────────────>│ ║Responses:                                ║                           
+          │                                    │ ║200: Rendered HTML page with signup form  ║                           
+          │                                    │ ╚══════════════════════════════════════════╝                           
+          │                                    │ ╔══════════════════════════════╗                                       
+          │                                    │ ║Register a new user          ░║                                       
+          │           POST /signup/            │ ║Responses:                    ║                                       
+          │───────────────────────────────────>│ ║201: Successfully registered  ║                                       
+          │                                    │ ║400: Missing data             ║                                       
+          │                                    │ ║403: User creation failed     ║                                       
+          │                                    │ ║409: Username already taken   ║                                       
+          │                                    │ ╚══════════════════════════════╝                                       
+          │                                    │ ╔══════════════════════════════════════╗                               
+          │          GET /start_set/           │ ║Retrieve list of available set names ░║                               
+          │───────────────────────────────────>│ ║Responses:                            ║                               
+          │                                    │ ║200: Set names retrieved              ║                               
+          │                                    │ ╚══════════════════════════════════════╝                               
+          │                                    │ ╔═══════════════════════════════╗                                      
+          │         POST /start_set/           │ ║Start new set, initialize KLS ░║                                      
+          │───────────────────────────────────>│ ║Responses:                     ║                                      
+          │                                    │ ║201: Set started successfully  ║                                      
+          │                                    │ ║403: User not authenticated    ║                                      
+          │                                    │ ╚═══════════════════════════════╝                                      
+          │                                    │ ╔═══════════════════════════════╗                                      
+          │        GET /terms_of_use/          │ ║Renders the terms of use page ░║                                      
+          │───────────────────────────────────>│ ║Responses:                     ║                                      
+          │                                    │ ║200: Rendered HTML page        ║                                      
+          │                                    │ ╚═══════════════════════════════╝                                      
+          │                                    │ ╔═════════════════════════════════╗                                    
+          │            GET /test/              │ ║Check if server is running      ░║                                    
+          │───────────────────────────────────>│ ║Responses:                       ║                                    
+          │                                    │ ║200: Server running and working  ║                                    
+          │                                    │ ╚═════════════════════════════════╝                                    
+          │                                    │ ╔══════════════════════════════════╗                                   
+          │       GET /upload_template/        │ ║Renders the upload template page ░║                                   
+          │───────────────────────────────────>│ ║Responses:                        ║                                   
+          │                                    │ ║200: Rendered HTML page           ║                                   
+          │                                    │ ╚══════════════════════════════════╝                                   
+          │                                    │ ╔═════════════════════════════════════╗                                
+          │   POST /upload_template/upload/    │ ║Upload and process template file    ░║                                
+          │───────────────────────────────────>│ ║Responses:                           ║                                
+          │                                    │ ║201: Template uploaded successfully  ║                                
+          │                                    │ ║403: User not authenticated          ║                                
+          │                                    │ ╚═════════════════════════════════════╝                                
+          │                                    │ ╔═════════════════════════════════════╗                                
+          │        GET /webcam_stream/         │ ║Stream webcam video                 ░║                                
+          │───────────────────────────────────>│ ║Responses:                           ║                                
+          │                                    │ ║200: Continuous webcam video stream  ║                                
+      Frontend                           ┌─────┴─╚═════════════════════════════════════╝                                
+         ┌─┐                             │KLS Server│                                                                   
+         ║"│                             └──────────┘                                                                   
+         └┬┘                                                                                                            
+         ┌┼┐                                                                                                            
+          │                                                                                                             
+         ┌┴┐                                                                                                            

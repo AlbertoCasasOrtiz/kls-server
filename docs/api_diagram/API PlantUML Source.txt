@@ -1,0 +1,127 @@
+@startuml
+title KLS Server API
+
+skinparam actorStyle node
+
+actor Frontend
+
+participant "KLS Server" as Server
+
+Frontend -> Server: GET /
+note right: Renders the homepage\nResponses:\n200: Rendered HTML page
+
+Frontend -> Server: GET /analyze_movement/
+note right: Analyzes modeled movement against expected\nResponses:\n200: Analysis result in template\n500: Error in analysis process
+
+Frontend -> Server: GET /analyze_movement_app/
+note right: Analyzes modeled movement, returns JSON\nResponses:\n200: Analysis result in JSON\n500: Error in analysis process
+
+Frontend -> Server: GET /capture_movement/
+note right: Captures movement, stores in session\nResponses:\n200: Captured and stored, renders page
+
+Frontend -> Server: GET /capture_movement_app/
+note right: Captures movement, stores in session\nResponses:\n200: Captured and stored
+
+Frontend -> Server: GET /get_csrf_token/
+note right: Retrieve CSRF token\nResponses:\n200: CSRF token retrieved\n500: Error retrieving CSRF token
+
+Frontend -> Server: GET /get_list_sets/
+note right: List all available sets\nResponses:\n200: List of set names
+
+Frontend -> Server: GET /get_next_question/
+note right: Retrieves next cognitive question\nResponses:\n200: Returns question, answers\n500: Error retrieving question
+
+Frontend -> Server: GET /get_next_question_app/
+note right: Retrieves next cognitive question in JSON\nResponses:\n200: Returns question, answers\n500: Error retrieving question
+
+Frontend -> Server: GET /get_report/
+note right: Generates report based on errors\nResponses:\n200: Report generated\n500: Error generating report
+
+Frontend -> Server: GET /get_report_app/
+note right: Generates report in JSON format\nResponses:\n200: Report generated\n500: Error generating report
+
+Frontend -> Server: GET /get_response/
+note right: Generates response based on movement analysis\nResponses:\n200: Response delivered, KLS updated\n500: Error generating response
+
+Frontend -> Server: GET /get_response_app/
+note right: Generates response in JSON format\nResponses:\n200: Response generated\n500: Error generating response
+
+Frontend -> Server: GET /info_set/
+note right: Fetch current KLS set details\nResponses:\n200: Set details retrieved\n500: Error retrieving set details
+
+Frontend -> Server: GET /info_set_app/
+note right: Fetch current KLS set details in JSON\nResponses:\n200: Set details retrieved\n500: Error retrieving set details
+
+Frontend -> Server: GET /login/
+note right: Renders the login page\nResponses:\n200: Rendered HTML page with login form
+
+Frontend -> Server: POST /login/
+note right: Authenticates a Frontend\nResponses:\n200: Session ID or redirect to homepage\n400: Missing Frontendname or password\n403: Incorrect credentials
+
+Frontend -> Server: GET /logout/
+note right: Renders logout confirmation\nResponses:\n200: Rendered HTML page confirming logout
+
+Frontend -> Server: GET /logout_app/
+note right: Logs out current Frontend\nResponses:\n200: JSON response for successful logout
+
+Frontend -> Server: GET /model_movement/
+note right: Models captured movement, stores result\nResponses:\n200: Modeled and rendered page\n500: Error modeling movement
+
+Frontend -> Server: GET /model_movement_app/
+note right: Models captured movement, stores in session\nResponses:\n200: Modeled and stored\n500: Error modeling movement
+
+Frontend -> Server: GET /next_movement/
+note right: Retrieves next or current movement\nResponses:\n200: Movement retrieved\n500: Error retrieving movement
+
+Frontend -> Server: GET /next_movement_app/
+note right: Retrieves next movement in JSON\nResponses:\n200: Movement retrieved\n500: Error retrieving movement
+
+Frontend -> Server: GET /prepare_capture_movement/
+note right: Prepares interface for capturing movement\nResponses:\n200: Rendered capture preparation page
+
+Frontend -> Server: GET /privacy_policy/
+note right: Renders privacy policy page\nResponses:\n200: Rendered HTML page
+
+Frontend -> Server: GET /register_correct_question/
+note right: Registers correct answer, advances question\nResponses:\n200: Next question advanced\n500: Error registering answer
+
+Frontend -> Server: GET /register_correct_question_app/
+note right: Registers correct answer in JSON\nResponses:\n200: Next question advanced\n500: Error registering answer
+
+Frontend -> Server: POST /register_wrong_question/
+note right: Registers a wrong answer for the current cognitive question\nResponses:\n201: Successfully registers the wrong answer\n500: Error during registration process
+
+Frontend -> Server: POST /register_wrong_question_app/
+note right: Registers a wrong answer in JSON for the current cognitive question\nResponses:\n201: Successfully registers the wrong answer\n500: Error during registration process
+
+Frontend -> Server: GET /restart_set/
+note right: Restart the current set, reinitialize the KLS instance\nResponses:\n200: Successfully restarted\n403: User not authenticated\n500: Error during restart
+
+Frontend -> Server: GET /signup/
+note right: Renders the signup page\nResponses:\n200: Rendered HTML page with signup form
+
+Frontend -> Server: POST /signup/
+note right: Register a new user\nResponses:\n201: Successfully registered\n400: Missing data\n403: User creation failed\n409: Username already taken
+
+Frontend -> Server: GET /start_set/
+note right: Retrieve list of available set names\nResponses:\n200: Set names retrieved
+
+Frontend -> Server: POST /start_set/
+note right: Start new set, initialize KLS\nResponses:\n201: Set started successfully\n403: User not authenticated
+
+Frontend -> Server: GET /terms_of_use/
+note right: Renders the terms of use page\nResponses:\n200: Rendered HTML page
+
+Frontend -> Server: GET /test/
+note right: Check if server is running\nResponses:\n200: Server running and working
+
+Frontend -> Server: GET /upload_template/
+note right: Renders the upload template page\nResponses:\n200: Rendered HTML page
+
+Frontend -> Server: POST /upload_template/upload/
+note right: Upload and process template file\nResponses:\n201: Template uploaded successfully\n403: User not authenticated
+
+Frontend -> Server: GET /webcam_stream/
+note right: Stream webcam video\nResponses:\n200: Continuous webcam video stream
+
+@enduml

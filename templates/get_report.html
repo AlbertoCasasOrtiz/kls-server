@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Movements Modeled</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while generating a response: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+              {{ generated_report|linebreaksbr }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

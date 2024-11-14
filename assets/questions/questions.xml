@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<questions>
+    <question>
+        <id>1</id>
+        <question>¿Qué enfatizamos en la ejecución de todos los bloqueos en el set de bloqueos 1?</question>
+        <answers>
+            <answer>Fuerza y Potencia</answer>
+            <answer>Técnica y Precision</answer>
+            <answer>Velocidad y Aceleración</answer>
+            <answer>Agresividad y Actitud</answer>
+        </answers>
+        <correct-answer-pos>1</correct-answer-pos>
+    </question>
+    <question>
+        <id>2</id>
+        <question>¿Qué es un bloqueo?</question>
+        <answers>
+            <answer>Una posición ofensiva</answer>
+            <answer>Un movimiento ofensivo</answer>
+            <answer>Un movimiento defensivo</answer>
+            <answer>Una posición defensiva</answer>
+        </answers>
+        <correct-answer-pos>2</correct-answer-pos>
+    </question>
+    <question>
+        <id>3</id>
+        <question>¿En que posición se realiza normalmente el set de bloqueos?</question>
+        <answers>
+            <answer>Posición Jinete</answer>
+            <answer>Posición de Atención</answer>
+            <answer>Posición de Arco y Flecha</answer>
+            <answer>Posición de Gato</answer>
+        </answers>
+        <correct-answer-pos>0</correct-answer-pos>
+    </question>
+    <question>
+        <id>4</id>
+        <question>¿En que parte del cuerpo deben estar tus brazos al comienzo del set de bloqueos?</question>
+        <answers>
+            <answer>En la Cintura</answer>
+            <answer>En las Caderas</answer>
+            <answer>En los Flancos</answer>
+            <answer>Cualquiera de las Anteriores</answer>
+        </answers>
+        <correct-answer-pos>1</correct-answer-pos>
+    </question>
+    <question>
+        <id>5</id>
+        <question>¿Qué posición tienen las manos al inicio del set?</question>
+        <answers>
+            <answer>Abiertas en posición defensiva</answer>
+            <answer>En un puño mirando hacia arriba</answer>
+            <answer>En un puño mirando hacia abajo</answer>
+            <answer>Abiertas en la cadera</answer>
+        </answers>
+        <correct-answer-pos>1</correct-answer-pos>
+    </question>
+</questions>

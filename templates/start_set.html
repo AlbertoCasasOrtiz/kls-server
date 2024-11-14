@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+  <div class="jumbotron">
+    <h1 class="mb-4">Start a New Set</h1>
+    <form method="POST" action="/start_set/">
+      {% csrf_token %}
+      {% if status == "success" %}
+        <div class="alert alert-success" role="alert">
+          The Set was loaded successfully.
+        </div>
+        <a class="btn btn-primary font-weight-bold text-white" href="/info_set/">Continue</a>
+      {% else %}
+        <div class="form-group">
+          <label for="set_name">Set Name:</label>
+          <select name="set_name" id="set_name" class="form-control" required>
+            {% for name in set_names %}
+              <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+          {% if status == "error" %}
+            <div class="alert alert-danger" role="alert">
+               There was an error while loading the Set: {{ error_message|linebreaksbr }}
+            </div>
+          {% endif %}
+        <button type="submit" class="btn btn-primary">Start Set</button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}

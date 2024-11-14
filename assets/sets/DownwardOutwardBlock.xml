@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<movement-set>
+    <movement-set-name>Bloqueo Hacia Abajo Hacia Fuera</movement-set-name>
+    <movement-set-description>Set de Bloqueos I es el primer set que se aprende en kenpo karate americano. Un bloqueo es un movimiento defensivo. Este set se ejecuta en posición jinete.</movement-set-description>
+    <movements>
+        <movement>
+            <movement-name>Bloqueo Hacia Abajo Hacia Fuera</movement-name>
+            <movement-description>El brazo regresa al centro del cuerpo y cae como un péndulo, siguiendo un movimiento circular, hasta sobrepasar tu cadera.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>1</movement-order>
+        </movement>
+    </movements>
+</movement-set>

@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="jumbotron">
+    <h1 class="mb-4">Upload Template</h1>
+    <form action="{{ request.build_absolute_uri }}upload/" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mb-3 align-items-center">
+        <label for="file" class="col-sm-2 col-form-label mb-0">Select file to upload:</label>
+        <div class="col-sm-10 p-0">
+          <input type="file" class="form-control" id="file" name="file">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

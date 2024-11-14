@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Set Metadata</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while loading the Set: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            {% csrf_token %}
+
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Set Name:</strong></label>
+                <div class="col-sm-10 p-0">
+                    {{ set_name }}
+                </div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Set Description:</strong></label>
+                <div class="col-sm-10 p-0">
+                     {{ set_description }}
+                </div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Num. of Movements:</strong></label>
+                <div class="col-sm-10 p-0">
+                     {{ movement_num }}
+                </div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label mb-0"><strong>Current Movement:</strong></label>
+                <div class="col-sm-10 p-0">
+                     {{ current_movement }}
+                </div>
+            </div>
+
+            <h3>Movements</h3>
+            <ul>
+                {% for movement in movement_name %}
+                <li>{{ movement }}</li>
+                {% endfor %}
+            </ul>
+            <a class="btn btn-primary font-weight-bold text-white" href="/next_movement/">Continue</a>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

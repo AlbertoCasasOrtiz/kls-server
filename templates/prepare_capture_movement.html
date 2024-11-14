@@ -1,0 +1,88 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<style>
+    .overlay {
+      position: absolute;
+      top: 16em;
+      left: 16em;
+      right: 0;
+      bottom: 0;
+      background-image: url('/static/assets/shilouette.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: .5;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Movements Captured</h1>
+        <!-- Webcam preview container -->
+            <div class="overlay"></div>
+        <div id="webcam-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 2em">
+            <video id="webcam-preview" autoplay playsinline></video>
+        </div>
+
+        <a class="btn btn-primary font-weight-bold text-white" href="/capture_movement" id="continue-button">Continue</a>
+    </div>
+</div>
+
+<script>
+    // Initialize variables to hold references to the webcam stream and video element
+    let webcamStream;
+    const videoElement = document.getElementById('webcam-preview');
+
+    // Function to stop the webcam stream
+    function stopWebcam() {
+        if (webcamStream) {
+            const tracks = webcamStream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+    }
+
+    // Add a click event listener to the "Continue" button
+    const continueButton = document.getElementById('continue-button');
+    continueButton.addEventListener('click', function() {
+        // Stop the webcam stream when the button is clicked
+        stopWebcam();
+
+        setTimeout(function() {}, 4000);
+        // Redirect to the "capture_movement" page
+        window.location.href = "/capture_movement";
+    });
+
+    // Access the webcam and display the video feed
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+            webcamStream = stream;
+            videoElement.srcObject = stream;
+        })
+        .catch(function (error) {
+            console.error('Error accessing webcam:', error);
+        });
+
+        // Function to be executed after a delay
+    function delayedButtonClick() {
+
+        stopWebcam();
+
+        setTimeout(function() {}, 4000);
+
+        // Play sound
+        var audio = new Audio('/static/assets/bell_ding3.wav');
+        audio.play();
+        // Get the button element
+        var continueButton = document.getElementById("continue-button");
+
+        // Simulate a click on the button
+        continueButton.click();
+    }
+
+    // Set a timeout for 5 seconds (5000 milliseconds)
+    setTimeout(delayedButtonClick, 5000);
+</script>
+{% endblock %}

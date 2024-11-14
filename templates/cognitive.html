@@ -1,0 +1,75 @@
+{% extends "base_generic.html" %}
+
+{% block title %}PLS - Psychomotor Learning System{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Styling for list items */
+    .my-2 {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect */
+    .my-2:hover {
+        background-color: lightgray;
+    }
+</style>
+
+<script>
+// This function is called whenever an answer is clicked.
+function checkAnswer(clickedElement) {
+    // Retrieve the clicked answer text.
+    var clickedAnswer = clickedElement.getAttribute('data-answer');
+
+    // Get the correct answer from a data attribute of a hidden element or directly from a JS variable.
+    // For this example, we'll assume there's a hidden element with the ID 'correct-answer' that holds the correct answer.
+    var correctAnswer = "{{ correct_answer }}"
+
+    // Compare the clicked answer with the correct answer.
+    if (clickedAnswer === correctAnswer) {
+        console.log("Correct answer!"); // or any other indication for correct answer
+        alert("Correct answer!");
+        // Get the button element
+        var registerCorrectQuestion = document.getElementById("correct-question");
+        // Simulate a click on the button
+        registerCorrectQuestion.click();
+        return true;
+    } else {
+        console.log("Wrong answer!"); // or any other indication for wrong answer
+        alert("Wrong answer!");
+        // Get the button element
+        //var registerWrongQuestion = document.getElementById("wrong-question");
+        // Simulate a click on the button
+        //registerWrongQuestion.click();
+        $.post("/register_wrong_question/", { wrong_answer: clickedAnswer });
+        return false;
+    }
+}
+</script>
+
+<div class="container my-5">
+    <div class="jumbotron">
+        <h1 class="mb-4">Movements Modeled</h1>
+        {% if status != "success" %}
+            <div class="alert alert-danger" role="alert">
+                There was an error while generating a response: {{ error_message|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="alert alert-light" role="alert">
+                <h4><b>Question:</b> {{ question_str|linebreaksbr }}</h4>
+                <ul>
+                    {% for answer in answers %}
+                    <li class="my-2" style="cursor: pointer" data-answer="{{ answer }}" onclick="checkAnswer(this)">{{ answer }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <a class="btn btn-primary font-weight-bold text-white" style="visibility: hidden;" href="/get_next_question/" id="next-question">Continue</a>
+            <a class="btn btn-primary font-weight-bold text-white" style="visibility: hidden;" href="/register_wrong_question/" id="wrong-question">Wrong</a>
+            <a class="btn btn-primary font-weight-bold text-white" style="visibility: hidden;" href="/register_correct_question/" id="correct-question">Wrong</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
