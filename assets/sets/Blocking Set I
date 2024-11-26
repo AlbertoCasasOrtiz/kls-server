@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<movement-set>
+    <movement-set-name>Blocking Set I</movement-set-name>
+    <movement-set-description>Blocking Set I is the first set learned in American Kenpo Karate. A block is a defensive movement. This set is performed in a horse stance.</movement-set-description>
+    <movements>
+        <movement>
+            <movement-name>Upward Block</movement-name>
+            <movement-description>The fist moves toward the center of the body and rises, following the central line of the body. At the end, the forearm should cover the head.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>1</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Hammering Inward Block</movement-name>
+            <movement-description>The arm lowers toward the opposite shoulder. The fist ends just below nose level.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>2</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Extended Outward Block</movement-name>
+            <movement-description>The fist moves horizontally in a straight line to your right until it surpasses the elbow.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>3</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Downward Outward Block</movement-name>
+            <movement-description>The arm returns to the center of the body and drops like a pendulum, following a circular motion, until it passes your hip.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>4</movement-order>
+        </movement>
+        <movement>
+            <movement-name>Hammering</movement-name>
+            <movement-description>The arm returns to the starting position, anchored at the hip.</movement-description>
+            <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
+            <movement-order>5</movement-order>
+        </movement>
+    </movements>
+</movement-set>
