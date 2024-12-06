@@ -28,7 +28,7 @@
             <movement-order>4</movement-order>
         </movement>
         <movement>
-            <movement-name>Hammering</movement-name>
+            <movement-name>Rear Elbow Block</movement-name>
             <movement-description>The arm returns to the starting position, anchored at the hip.</movement-description>
             <movement-key-points>['RIGHT_ELBOW', 'RIGHT_WRIST']</movement-key-points>
             <movement-order>5</movement-order>
