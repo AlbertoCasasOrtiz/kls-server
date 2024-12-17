@@ -3,7 +3,7 @@ import ast
 import http
 import json
 import traceback
-from datetime import datetime
+from datetime import datetime, time, timedelta
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -108,20 +108,27 @@ class WebcamStream(views.APIView):
             200: A continuous stream of webcam video.
     """
 
-    def get(self, request):
-        cap = cv2.VideoCapture(0)
-        response = StreamingHttpResponse(self.generate_frames(cap), content_type="multipart/x-mixed-replace; boundary=frame")
-        return response
-
-    @staticmethod
-    def generate_frames(cap):
-        while True:
+    def generate_frames(self, cap, time_limit):
+        start_time = datetime.now()
+        while datetime.now() - start_time < timedelta(seconds=time_limit):
             ret, frame = cap.read()
             if not ret:
                 break
             _, buffer = cv2.imencode('.jpg', frame)
+            frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+        cap.release()  # Release the capture once the time limit is reached.
+
+    def get(self, request, camera_index, time_limit=5):
+        cap = cv2.VideoCapture(camera_index)
+        if not cap.isOpened():
+            return StreamingHttpResponse("Unable to open camera", status=500)
+        response = StreamingHttpResponse(
+            self.generate_frames(cap, time_limit),
+            content_type="multipart/x-mixed-replace; boundary=frame"
+        )
+        return response
 
 
 class LogoutApp(views.APIView):
@@ -1322,23 +1329,22 @@ class GetResponseApp(views.APIView):
                                                                                                                  next_movement_name,
                                                                                                                  kls.should_repeat_movement())
 
+                # Should the movement be repeated.
+                should_repeat = kls.should_repeat_movement()
+
                 # Update next movement.
-                if is_correct:
+                if is_correct or not kls.should_repeat_movement():
                     kls.num_reps = 1
+                    request.session['last_successful'] = True
                 else:
                     kls.num_reps += 1
+                    request.session['last_successful'] = False
 
                 # Deliver response.
                 # kls.response.deliver_response(generated_response)
 
                 # Store errors.
                 kls.compiled_errors.append([kls.num_iter, expected_movement.get_name(), analyzed_movement_errors])
-
-                # Update next movement.
-                if is_correct:
-                    request.session['last_successful'] = True
-                else:
-                    request.session['last_successful'] = False
 
                 # Update num. iter.
                 kls.num_iter = kls.num_iter + 1
@@ -1353,6 +1359,7 @@ class GetResponseApp(views.APIView):
             text_to_deliver = ''
             is_last = False
             is_correct = False
+            should_repeat = False
             code_to_return = ''
             print(error_message)
 
@@ -1361,6 +1368,7 @@ class GetResponseApp(views.APIView):
             'generated_response': text_to_deliver,
             'is_last': is_last,
             'is_correct': is_correct,
+            'should_repeat': should_repeat,
             'error_code': code_to_return,
             'error_message': error_message
         }
@@ -1415,20 +1423,19 @@ class GetResponse(views.APIView):
             # Deliver response.
             kls.response.deliver_response(text_to_deliver)
 
+            # Should the movement be repeated.
+            should_repeat = kls.should_repeat_movement()
+
             # Update next movement.
-            if is_correct:
+            if is_correct or not kls.should_repeat_movement():
                 kls.num_reps = 1
+                request.session['last_successful'] = True
             else:
                 kls.num_reps += 1
+                request.session['last_successful'] = False
 
             # Store errors.
             kls.compiled_errors.append([kls.num_iter, expected_movement.get_name(), analyzed_movement_errors])
-
-            # Update next movement.
-            if is_correct:
-                request.session['last_successful'] = True
-            else:
-                request.session['last_successful'] = False
 
             # Update num. iter.
             kls.num_iter = kls.num_iter + 1
@@ -1442,6 +1449,7 @@ class GetResponse(views.APIView):
             text_to_deliver = ''
             is_last = False
             is_correct = False
+            should_repeat = False
             code_to_return = ''
             print(error_message)
 
@@ -1450,6 +1458,7 @@ class GetResponse(views.APIView):
             'generated_response': text_to_deliver,
             'is_last': is_last,
             'is_correct': is_correct,
+            'should_repeat': should_repeat,
             'error_code': code_to_return,
             'error_message': error_message
         }
@@ -1532,6 +1541,8 @@ class RegenerateReport(views.APIView):
             generated_reports = kls.reports.generate_summary_report(output_path, "",
                                                              kls.compiled_errors, kls.answers, True)
 
+            # Generate metareport.
+            kls.metareports.generate_meta_reports("assets/output/" + request.user.username + "/")
         except:
             # printing stack trace
             error_message = traceback.format_exc()
@@ -1577,6 +1588,8 @@ class GetReport(views.APIView):
             generated_reports = kls.reports.generate_summary_report(output_path, "",
                                                              kls.compiled_errors, kls.answers, True)
 
+            # Generate metareport.
+            kls.metareports.generate_meta_reports(os.path.dirname(output_path))
         except:
             # printing stack trace
             error_message = traceback.format_exc()
@@ -1622,6 +1635,8 @@ class GetReportApp(views.APIView):
             generated_reports = kls.reports.generate_summary_report(output_path, "",
                                                              kls.compiled_errors, kls.answers, True)
 
+            # Generate metareport.
+            kls.metareports.generate_meta_reports("assets/output/" + request.user.username + "/")
         except:
             # printing stack trace
             error_message = traceback.format_exc()
@@ -1989,6 +2004,43 @@ class RegisterCorrectQuestionApp(views.APIView):
         context = {
             'status': status,
             'error_message': error_message
+        }
+
+        return JsonResponse(context, status=http.HTTPStatus.OK)
+
+
+class GetMetareportValues(views.APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        status = 'success'
+        error_message = ''
+        avg_values = {"mean_previous_psychomotor_score": 0,
+                      "mean_previous_cognitive_score": 0,
+                      "majoritary_previous_emotion": "Neutral"}
+
+        try:
+            #  Get kls instance.
+            output_path = request.session.get('output_path', "assets/output/capture/")
+            kls = get_kls_from_session(request, output_path)
+
+            # Set output path with username.
+            output_path = "assets/output/" + request.user.username + "/"
+
+            avg_values = kls.metareports.get_metareport_values(output_path, 1)
+            print(avg_values)
+        except:
+            # printing stack trace
+            error_message = traceback.format_exc()
+            status = 'error'
+
+        context = {
+            'status': status,
+            'error_message': error_message,
+            'mean_previous_psychomotor_score': avg_values["mean_previous_psychomotor_score"],
+            'mean_previous_cognitive_score': avg_values["mean_previous_cognitive_score"],
+            'majoritary_previous_emotion': avg_values["majoritary_previous_emotion"],
         }
 
         return JsonResponse(context, status=http.HTTPStatus.OK)

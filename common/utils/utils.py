@@ -9,6 +9,7 @@ from kls_mcmarr.kls.analyze.analyze import Analyze
 from kls_mcmarr.kls.response.response import Response
 from kls_mcmarr.kls.reports.reports import Reports
 from kls_mcmarr.kls.cognitive.Cognitive import Cognitive
+from kls_mcmarr.kls.reports.metareports import MetaReports
 
 
 def get_kls_from_session(request, output_path):
@@ -54,11 +55,12 @@ def assign_phase_implementations_kls(kls, output_path):
     analyze = Analyze(output_path=output_path)
     response = Response()
     reports = Reports()
+    metareports = MetaReports()
     cognitive = Cognitive()
     print(os.getcwd())
     cognitive.load_questions("assets/questions/questions.xml")
 
     # Assign the instances to the KLS object.
-    kls.assign_phase_implementations(indications, capture, model, analyze, response, reports, cognitive)
+    kls.assign_phase_implementations(indications, capture, model, analyze, response, reports, cognitive, metareports)
 
     return kls
